@@ -55,7 +55,7 @@ while(True):
         for link in links:
             if(link.get('title')!=None and "/currencies/" in str(link.get('href'))):
                 print(i,link.get('title'),"\n",link.get('href'))
-                currency_pages[link.get('title')]=link.get('href')
+                currency_pages[link.get('title').tolower]=link.get('href')
                 i+=1
         page_num+=1
     elif(source_code.status_code==404):
@@ -74,7 +74,9 @@ start_time = time.time()
 # TODO:  Go to each one, and access currency and strip all data(tags)
 #    then clone the repo
 #currency_pages- hold all names and rel paths for every cryptocurrency
-currency_pages={"Bitcoin":"/currencies/bitcoin/"}
+currency_pages={"Bitcoin":"/currencies/bitcoin/","Tether":"/currencies/tether/"}
+tags=dict()  # Store tags for a cryptocurrency(key is currency name eg bitcoin)
+currency_github=dict()  # Store github links for each crypto currency(key is currency name eg bitcoin)
 for key,val in currency_pages.items():
     #key=name
     #val=relative path
@@ -82,8 +84,20 @@ for key,val in currency_pages.items():
     if (response.status_code == 200):
         plain_text = response.content
         soup = BeautifulSoup(plain_text, "lxml")
+        tgs = soup.findAll('span', attrs = {'class' : 'cmc-label sc-13jrx81-0 jPpbJm'})
+        tmp=[]
+        for tag in tgs:
+            tmp.append(tag.text)
+            #print(tag.text)
+        tags[key]=tmp
         links = soup.findAll('a', string="Source Code", href=True)
-
+        for link in links:
+            currency_github[key] = link.get('href')
+        print(tags,'\n',currency_github)
+# TODO: clone git repos using currency_github for links
+    else:
+        print("something is wrong")
+'''
     if len(curr_git) > 1:
         # resp=tr.get(str(curr_git[1]))
         resp = requests.get(str(curr_git[1]))
@@ -143,3 +157,4 @@ for key,val in currency_pages.items():
     time.sleep(napTime)
 
 print("--- %s seconds ---" % (time.time() - start_time))
+'''
