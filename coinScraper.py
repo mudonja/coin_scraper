@@ -43,6 +43,7 @@ base_url = 'https://coinmarketcap.com'
 i=1
 page_num=1
 currency_pages=dict()
+'''
 while(True):
     #napTime = random.randint(5, 10)
     #time.sleep(napTime)
@@ -62,7 +63,7 @@ while(True):
         break
     else:
         print("Code:",source_code.status_code)
-
+'''
 #for key,val in currency_pages.items():
 #    print(key,":",val,"\n")
 
@@ -73,16 +74,15 @@ start_time = time.time()
 # TODO:  Go to each one, and access currency and strip all data(tags)
 #    then clone the repo
 #currency_pages- hold all names and rel paths for every cryptocurrency
-
+currency_pages={"Bitcoin":"/currencies/bitcoin/"}
 for key,val in currency_pages.items():
     #key=name
     #val=relative path
-
     response = requests.get(base_url + val)
-    soup = BeautifulSoup(response.text, "html.parser")
-
-    curr_git = re.findall("href=\"https://.*github\.com/.*\"|$", str(soup))[0]
-    curr_git = re.split("\"", str(curr_git))
+    if (response.status_code == 200):
+        plain_text = response.content
+        soup = BeautifulSoup(plain_text, "lxml")
+        links = soup.findAll('a', string="Source Code", href=True)
 
     if len(curr_git) > 1:
         # resp=tr.get(str(curr_git[1]))
