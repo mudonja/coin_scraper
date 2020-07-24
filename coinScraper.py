@@ -94,7 +94,9 @@ cmc = os.path.join(cmc_dir_path,cmc_dir)
 if(os.path.isdir(cmc)):
     print("\nCMCcurrencies already exists!\n")
 else:
-    os.mkdir(cmc)
+    dateTimeObj = datetime.now()
+    timestampStr = dateTimeObj.strftime("%Y-%m-%d-%H-%M-%S_%f")
+    os.mkdir(cmc+timestampStr)
 
 stopPT=0
 for key, val in currency_github.items():
