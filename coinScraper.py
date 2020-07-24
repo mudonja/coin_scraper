@@ -1,15 +1,11 @@
 #!/usr/bin/env/ python
 import random
 from datetime import datetime
-
 import requests
-import urllib.request
-import time
 from bs4 import BeautifulSoup, SoupStrainer
 # TODO: Implement torrequests so user can use TOR
 # from torrequest import TorRequest
 import os
-import re
 import time
 import json
 
@@ -33,22 +29,23 @@ while (True):
     #   and will download based on criteria...
     source_code = requests.get(base_url + "/" + str(page_num) + "/")
     if (source_code.status_code == 200):
+        print("Page:", page_num, "\nStatus 200 OK!")
         plain_text = source_code.content
         soup = BeautifulSoup(plain_text, "lxml")
         links = soup.findAll('a', {'class': 'cmc-link'}, href=True)
         for link in links:
             if (link.get('title') != None and "/currencies/" in str(link.get('href'))):
-                # print(i,link.get('title'),"\n",link.get('href'))
+                # print(i, link.get('title'), "\n", link.get('href'))
                 currency_pages[link.get('title')] = link.get('href')
                 i += 1
         page_num += 1
-        break  # TODO: Remove for full functionality
+        #break  # TODO: Remove for full functionality
     elif (source_code.status_code == 404):
         print("Page not found:", source_code.status_code)
         break
     else:
         print("Code:", source_code.status_code)
-print("Crypto Currency Total:", i)
+print("Crypto Currency Total:", i-1)
 Download_counter = 1
 total = 1
 start_time = time.time()
@@ -59,14 +56,14 @@ start_time = time.time()
 tags = dict()  # cryptocurrency tag(key is currency name eg bitcoin)
 currency_github = dict()  # crypto currency github links(key is currency name eg bitcoin)
 
-stopPT = 0
+#stopPT = 0
 # This for loop scrapes SourceCode links and Tags
 for key, val in currency_pages.items():
     # key=name
     # val=relative path
-    '''if(stopPT>5): # TODO Remove for functionality
+    '''if (stopPT > 5):  # TODO Remove for functionality
         break
-    stopPT+=1'''
+    stopPT += 1'''
     napTime = random.randint(5, 10)
     time.sleep(napTime)
     response = requests.get(base_url + val)
@@ -89,17 +86,18 @@ with open("./codeSimLinks.txt", 'a+') as f:
     f.write(json.dumps(currency_github))
     f.close()
 
+dateTimeObj = datetime.now()
+timestampStr = dateTimeObj.strftime("%Y-%m-%d-%H-%M-%S_%f")
 cmc_dir_path = "."
-cmc_dir = "CMCcurrencies"
+cmc_dir = "CMCcurrencies" + timestampStr
 cmc = os.path.join(cmc_dir_path, cmc_dir)
 if (os.path.isdir(cmc)):
     print("\nCMCcurrencies already exists!\n")
 else:
-    dateTimeObj = datetime.now()
-    timestampStr = dateTimeObj.strftime("%Y-%m-%d-%H-%M-%S_%f")
-    os.mkdir(cmc + timestampStr)
+    print(cmc, "created!")
+    os.mkdir(cmc)
 
-stopPT = 0
+#stopPT = 0
 for key, val in currency_github.items():
     '''if (stopPT > 5):  # TODO Remove for functionality
         break
