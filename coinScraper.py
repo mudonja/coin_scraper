@@ -124,6 +124,8 @@ for key, val in currency_github.items():
     # Checks weather gihub repository
     if (response.status_code == 200 and "github.com" in response.__getattribute__('url')):
         cnter = 0
+        napTime = random.randint(5, 10)
+        time.sleep(napTime)
         plain_text = response.content
         soup = BeautifulSoup(plain_text, "lxml")  # , parse_only=SoupStrainer('a'))
         # This one targets only pinned repos
@@ -161,6 +163,8 @@ for key, val in currency_github.items():
             Download_counter = Download_counter + 1
     # Checks weather gitlab repo
     elif (response.status_code == 200 and "gitlab.com" in response.__getattribute__('url')):
+        napTime = random.randint(5, 10)
+        time.sleep(napTime)
         cmd = "git clone --progress " + str(val)[:8] + usrname + ":" + passwrd + "@" + str(val)[
                                                                                      8:] + '.git ' + currency_dir + " 2>>~/currency-clone.log"
         os.system(cmd)
