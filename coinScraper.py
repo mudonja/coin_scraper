@@ -136,8 +136,8 @@ for key, val in currency_github.items():
                     # so we only get first 2 dirs(why 2, one is for source the other is for suggestions)
                     # Make the code really smart checks weather changes are in the proposal directory and
                     # increases the score if some errors will get fixed or if code distance increases
-                    cmd = "git clone --progress", github_url + str(
-                        link.get('href')) + '.git ', currency_dir, "2>>~/currency-clone.log"
+                    cmd = "git clone --progress " + github_url + str(
+                        link.get('href')) + '.git ' + currency_dir + " 2>>~/currency-clone.log"
                     os.system(cmd)
                     Download_counter = Download_counter + 1
         elif (soup.find('h2', {'class': 'f4 text-normal d-md-none'})):
@@ -148,21 +148,21 @@ for key, val in currency_github.items():
                 for link in links:
                     if (cnter > 1):  # Get only first two repos
                         break
-                    cmd = "git clone --progress", github_url + str(
-                        link.get('href')) + '.git ', currency_dir, "2>>~/currency-clone.log"
+                    cmd = "git clone --progress " + github_url + str(
+                        link.get('href')) + '.git ' + currency_dir + " 2>>~/currency-clone.log"
                     os.system(cmd)
                     Download_counter = Download_counter + 1
                     cnter += 1
         else:
             print("Repository")
-            cmd = "git clone --progress", str(val)[:8] + usrname + ":" + passwrd + "@" + str(val)[
-                                                                                         8:] + '.git ', currency_dir, "2>>~/currency-clone.log"
+            cmd = "git clone --progress " + str(val)[:8] + usrname + ":" + passwrd + "@" + str(val)[
+                                                                                         8:] + '.git ' + currency_dir + " 2>>~/currency-clone.log"
             os.system(cmd)
             Download_counter = Download_counter + 1
     # Checks weather gitlab repo
     elif (response.status_code == 200 and "gitlab.com" in response.__getattribute__('url')):
-        cmd = "git clone --progress", str(val)[:8] + usrname + ":" + passwrd + "@" + str(val)[
-                                                                                     8:] + '.git ', currency_dir, "2>>~/currency-clone.log"
+        cmd = "git clone --progress " + str(val)[:8] + usrname + ":" + passwrd + "@" + str(val)[
+                                                                                     8:] + '.git ' + currency_dir + " 2>>~/currency-clone.log"
         os.system(cmd)
         Download_counter = Download_counter + 1
     # Checks weather bitbucket repo
