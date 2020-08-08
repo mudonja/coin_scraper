@@ -1,6 +1,7 @@
 #!/usr/bin/env/ python
 import random
 from datetime import datetime
+import datetime
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
 # TODO: Implement torrequests so user can use TOR
@@ -55,9 +56,10 @@ start_time = time.time()
 #                "FLETA":"/currencies/fleta/", "Hive":"/currencies/hive-blockchain/"}  # Used for testing
 tags = dict()  # cryptocurrency tag(key is currency name eg bitcoin)
 currency_github = dict()  # crypto currency github links(key is currency name eg bitcoin)
-
+#print(currency_pages)
 #stopPT = 0
 # This for loop scrapes SourceCode links and Tags
+
 for key, val in currency_pages.items():
     # key=name
     # val=relative path
@@ -67,7 +69,10 @@ for key, val in currency_pages.items():
     napTime = random.randint(5, 10)
     time.sleep(napTime)
     response = requests.get(base_url + val)
+
     if (response.status_code == 200):
+        print("Status code:", response.status_code)
+        print('Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now()))
         plain_text = response.content
         soup = BeautifulSoup(plain_text, "lxml")
         tgs = soup.findAll('span', attrs={'class': 'cmc-label sc-13jrx81-0 jPpbJm'})
@@ -79,6 +84,9 @@ for key, val in currency_pages.items():
         links = soup.findAll('a', string="Source Code", href=True)
         for link in links:
             currency_github[key] = link.get('href')
+
+        print("Done with TAGS for:", key)
+        print('Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now()))
     else:
         print("Response did not return status 200 OK", "\n", "Response status:", response.status_code)
 
@@ -86,7 +94,7 @@ with open("./codeSimLinks.txt", 'a+') as f:
     f.write(json.dumps(currency_github))
     f.close()
 
-dateTimeObj = datetime.now()
+dateTimeObj = datetime.datetime.now()
 timestampStr = dateTimeObj.strftime("%Y-%m-%d-%H-%M-%S_%f")
 cmc_dir_path = "."
 cmc_dir = "CMCcurrencies" + timestampStr
@@ -98,6 +106,8 @@ else:
     os.mkdir(cmc)
 
 #stopPT = 0
+print("Going to clone from GitHub\n")
+print('Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now()))
 for key, val in currency_github.items():
     '''if (stopPT > 5):  # TODO Remove for functionality
         break
