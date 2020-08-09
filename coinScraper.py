@@ -59,8 +59,8 @@ currency_github = dict()  # crypto currency github links(key is currency name eg
 #print(currency_pages)
 #stopPT = 0
 # This for loop scrapes SourceCode links and Tags
-
-for key, val in currency_pages.items():
+whitelist = set('abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+for keytmp, val in currency_pages.items():
     # key=name
     # val=relative path
     '''if (stopPT > 5):  # TODO Remove for functionality
@@ -69,7 +69,7 @@ for key, val in currency_pages.items():
     napTime = random.randint(5, 10)
     time.sleep(napTime)
     response = requests.get(base_url + val)
-
+    key = ''.join(filter(whitelist.__contains__, keytmp))
     if (response.status_code == 200):
         print("Status code:", response.status_code)
         print('Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now()))
@@ -143,7 +143,7 @@ for key, val in currency_github.items():
             pinned_repos = soup.find('h2', {'class': "f4 text-normal flex-auto pr-2"}).text.strip().lower()
             if (pinned_repos == "pinned repositories"):
                 links = soup.findAll('a', {'class': 'text-bold flex-auto min-width-0'}, href=True)
-                print("Pinned Repositories:")
+                print("Pinned Repositories")
                 for link in links:
                     # so we only get first 2 dirs(why 2, one is for source the other is for suggestions)
                     # Make the code really smart checks weather changes are in the proposal directory and
@@ -156,7 +156,7 @@ for key, val in currency_github.items():
             regular_repos = soup.find('h2', {'class': 'f4 text-normal d-md-none'}).text.strip().lower()
             if (regular_repos == "repositories"):
                 links = soup.findAll('a', itemprop="name codeRepository", href=True)
-                print("Regular Repositories:")
+                print("Regular Repositories")
                 for link in links:
                     if (cnter > 1):  # Get only first two repos
                         break
