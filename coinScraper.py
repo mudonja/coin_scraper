@@ -108,10 +108,11 @@ else:
 #stopPT = 0
 print("Going to clone from GitHub\n")
 print('Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now()))
-for key, val in currency_github.items():
+for keytmp, val in currency_github.items():
     '''if (stopPT > 5):  # TODO Remove for functionality
         break
     stopPT += 1'''
+    key = ''.join(filter(whitelist.__contains__, keytmp))
     # Cardano has their own weird website, just skip it and TODO clone cardano manually
     if (str(key).lower() == "cardano"):
         continue
