@@ -12,8 +12,10 @@ import json
 
 # TODO: Secure this before using
 # Used for github credentials
-usrname = input("Github username:")
-passwrd = input("Github password:")
+#usrname = input("Github username:")
+#passwrd = input("Github password:")
+usrname="mudonja"
+passwrd="c0dingisfun"
 
 base_url = 'https://coinmarketcap.com'
 github_url = "https://" + usrname + ":" + passwrd + "@github.com"
