@@ -118,6 +118,8 @@ for keytmp, val in currency_github.items():
     # Cardano has their own weird website, just skip it and TODO clone cardano manually
     if (str(key).lower() == "cardano"):
         continue
+    if(str(key).lower() == "straks"):
+        continue
     # Stores the path for directory where crypto will be cloned
     currency_dir = os.path.join(cmc, str(key))
     if (os.path.isdir(currency_dir)):
